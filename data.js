@@ -12,11 +12,11 @@ const TODAY = '2026-02-10';
 const TODAY_LABEL = '2026년 2월 10일 화요일';
 
 const STAFF = {
-  name: '김수정 팀장',
-  initial: '김',
+  name: '홍길동 팀장',
+  initial: '홍',
   role: '예약실 · 7년차',
-  hall: '라비드블랑 웨딩홀',
-  phone: '02-1234-5678',
+  hall: 'OO웨딩홀',
+  phone: '02-0000-0000',
   hours: '평일 10:00–19:00',
 };
 
@@ -110,35 +110,35 @@ const CHECKLIST = [
 ];
 
 const CUSTOMERS = [
-  { id: 1, couple: '김민준 · 이서연', phone: '010-2841-7719', date: '2026. 5. 16 (토) 13:00', dday: 'D-95', hall: '그랜드홀', tasting: '3. 14 (토)', pct: 43, status: '진행중' },
-  { id: 2, couple: '박지훈 · 최유나', phone: '010-9042-3388', date: '2026. 4. 4 (토) 11:00', dday: 'D-53', hall: '채플홀', tasting: '2. 21 (토)', pct: 71, status: '계약완료' },
-  { id: 3, couple: '정우성 · 한소희', phone: '010-3311-8025', date: '2026. 3. 21 (토) 15:30', dday: 'D-39', hall: '그랜드홀', tasting: '2. 14 (토)', pct: 86, status: '계약완료' },
-  { id: 4, couple: '이도현 · 김하늘', phone: '010-7788-1204', date: '2026. 6. 13 (토) 12:00', dday: 'D-123', hall: '가든홀', tasting: '미정', pct: 21, status: '상담중' },
-  { id: 5, couple: '오정민 · 서다은', phone: '010-5520-6613', date: '2026. 9. 19 (토) 14:00', dday: 'D-221', hall: '채플홀', tasting: '미정', pct: 7, status: '상담중' },
+  { id: 1, couple: '김민준 · 이서연', phone: '010-0000-0001', date: '2026. 5. 16 (토) 13:00', dday: 'D-95', hall: '그랜드홀', tasting: '3. 14 (토)', pct: 43, status: '진행중' },
+  { id: 2, couple: '박준서 · 최유진', phone: '010-0000-0002', date: '2026. 4. 4 (토) 11:00', dday: 'D-53', hall: '채플홀', tasting: '2. 21 (토)', pct: 71, status: '계약완료' },
+  { id: 3, couple: '정하람 · 한소연', phone: '010-0000-0003', date: '2026. 3. 21 (토) 15:30', dday: 'D-39', hall: '그랜드홀', tasting: '2. 14 (토)', pct: 86, status: '계약완료' },
+  { id: 4, couple: '이도윤 · 김하영', phone: '010-0000-0004', date: '2026. 6. 13 (토) 12:00', dday: 'D-123', hall: '가든홀', tasting: '미정', pct: 21, status: '상담중' },
+  { id: 5, couple: '오현우 · 서다인', phone: '010-0000-0005', date: '2026. 9. 19 (토) 14:00', dday: 'D-221', hall: '채플홀', tasting: '미정', pct: 7, status: '상담중' },
 ];
 
 const TASTINGS = [
-  { id: 't1', cid: 3, couple: '정우성 · 한소희', date: '2026. 2. 10 (화) 12:00', place: '그랜드홀 시식장', party: 4, menu: '프리미엄 A 코스', memo: '신부 부모님 채식 1인 요청', status: '확정', confirmed: true },
-  { id: 't2', cid: 2, couple: '박지훈 · 최유나', date: '2026. 2. 21 (토) 12:30', place: '채플홀 시식장', party: 6, menu: '스탠다드 B 코스', memo: '유아용 의자 2개 필요', status: '확정', confirmed: true },
+  { id: 't1', cid: 3, couple: '정하람 · 한소연', date: '2026. 2. 10 (화) 12:00', place: '그랜드홀 시식장', party: 4, menu: '프리미엄 A 코스', memo: '신부 부모님 채식 1인 요청', status: '확정', confirmed: true },
+  { id: 't2', cid: 2, couple: '박준서 · 최유진', date: '2026. 2. 21 (토) 12:30', place: '채플홀 시식장', party: 6, menu: '스탠다드 B 코스', memo: '유아용 의자 2개 필요', status: '확정', confirmed: true },
   { id: 't3', cid: 1, couple: '김민준 · 이서연', date: '2026. 3. 14 (토) 12:00', place: '그랜드홀 시식장', party: 4, menu: '미선택', memo: '코스 선택 안내 문자 발송함', status: '확정', confirmed: false },
-  { id: 't4', cid: 4, couple: '이도현 · 김하늘', date: '일정 조율 중', place: '미정', party: 4, menu: '미선택', memo: '3월 첫째 주 토요일 희망 (게시판 메모 참고)', status: '조율중', confirmed: false },
-  { id: 't5', cid: 5, couple: '오정민 · 서다은', date: '미정', place: '미정', party: 2, menu: '미선택', memo: '계약 후 안내 예정', status: '미정', confirmed: false },
+  { id: 't4', cid: 4, couple: '이도윤 · 김하영', date: '일정 조율 중', place: '미정', party: 4, menu: '미선택', memo: '3월 첫째 주 토요일 희망 (게시판 메모 참고)', status: '조율중', confirmed: false },
+  { id: 't5', cid: 5, couple: '오현우 · 서다인', date: '미정', place: '미정', party: 2, menu: '미선택', memo: '계약 후 안내 예정', status: '미정', confirmed: false },
 ];
 
 const MEMOS = [
-  { id: 'm1', who: '김민준 · 이서연', phone: '010-2841-7719', time: '오늘 10:24', author: '윤채영 매니저', assignee: '김수정 팀장', body: '식전 영상 파일 용량이 커서 업로드가 안 된다고 문의. 압축 방법 안내 필요하며 오늘 중 회신 요청하셨습니다.', done: false },
-  { id: 'm2', who: '이도현 · 김하늘', phone: '010-7788-1204', time: '오늘 09:05', author: '박서준 주임', assignee: '김수정 팀장', body: '시식 예약일을 3월 첫째 주 토요일로 변경 희망. 가능 여부 확인 후 연락 부탁드립니다.', done: false },
-  { id: 'm3', who: '정우성 · 한소희', phone: '010-3311-8025', time: '어제 16:41', author: '김수정 팀장', assignee: '윤채영 매니저', body: '밝은 분위기 홀 선호 요청 재확인. 이전 상담에서 언급된 내용이라 담당 변경 시에도 반영되도록 기록합니다.', done: true },
-  { id: 'm4', who: '박지훈 · 최유나', phone: '010-9042-3388', time: '2. 8 14:12', author: '박서준 주임', assignee: '박서준 주임', body: '혼주 한복 제휴업체 연락처 요청. 한복 소이 정보 문자 발송 완료했습니다.', done: true },
+  { id: 'm1', who: '김민준 · 이서연', phone: '010-0000-0001', time: '오늘 10:24', author: '이영희 매니저', assignee: '홍길동 팀장', body: '식전 영상 파일 용량이 커서 업로드가 안 된다고 문의. 압축 방법 안내 필요하며 오늘 중 회신 요청하셨습니다.', done: false },
+  { id: 'm2', who: '이도윤 · 김하영', phone: '010-0000-0004', time: '오늘 09:05', author: '김철수 주임', assignee: '홍길동 팀장', body: '시식 예약일을 3월 첫째 주 토요일로 변경 희망. 가능 여부 확인 후 연락 부탁드립니다.', done: false },
+  { id: 'm3', who: '정하람 · 한소연', phone: '010-0000-0003', time: '어제 16:41', author: '홍길동 팀장', assignee: '이영희 매니저', body: '밝은 분위기 홀 선호 요청 재확인. 이전 상담에서 언급된 내용이라 담당 변경 시에도 반영되도록 기록합니다.', done: true },
+  { id: 'm4', who: '박준서 · 최유진', phone: '010-0000-0002', time: '2. 8 14:12', author: '김철수 주임', assignee: '김철수 주임', body: '혼주 한복 제휴업체 연락처 요청. 고운한복 정보 문자 발송 완료했습니다.', done: true },
 ];
 
 const VENDORS = [
-  { category: '스튜디오', name: '포엠 스튜디오', desc: '예식 2개월 전 촬영 권장. 웨딩홀 제휴가 15% 할인 적용.', phone: '02-540-1188', rate: '제휴가 15%', slot: '업체 대표 이미지' },
-  { category: '드레스', name: '메종 드 블랑', desc: '가봉 포함 3벌 피팅. 주말 예약은 2개월 전 마감됩니다.', phone: '02-3446-0912', rate: '제휴가 10%', slot: '업체 대표 이미지' },
-  { category: '메이크업', name: '라뷰티 청담', desc: '혼주 메이크업 동반 예약 시 추가 할인. 당일 출장 가능.', phone: '02-518-7740', rate: '제휴가 20%', slot: '업체 대표 이미지' },
-  { category: '한복', name: '한복 소이', desc: '혼주 한복 대여 및 맞춤. 예식 1개월 전 채촌 필요.', phone: '02-744-2231', rate: '제휴가 10%', slot: '업체 대표 이미지' },
-  { category: '청첩장', name: '카드모리', desc: '모바일 청첩장 무료 제작 포함. 인쇄 최소 수량 100장.', phone: '070-8899-2020', rate: '제휴가 12%', slot: '업체 대표 이미지' },
-  { category: '폐백음식', name: '예담 폐백', desc: '예식 당일 반입. 이바지 음식 별도 주문 가능합니다.', phone: '02-2261-3355', rate: '제휴가 8%', slot: '업체 대표 이미지' },
+  { category: '스튜디오', name: '하늘빛 스튜디오', desc: '예식 2개월 전 촬영 권장. 웨딩홀 제휴가 15% 할인 적용.', phone: '02-0000-0011', rate: '제휴가 15%', slot: '업체 대표 이미지' },
+  { category: '드레스', name: '화이트로즈 드레스', desc: '가봉 포함 3벌 피팅. 주말 예약은 2개월 전 마감됩니다.', phone: '02-0000-0012', rate: '제휴가 10%', slot: '업체 대표 이미지' },
+  { category: '메이크업', name: '뷰티라운지', desc: '혼주 메이크업 동반 예약 시 추가 할인. 당일 출장 가능.', phone: '02-0000-0013', rate: '제휴가 20%', slot: '업체 대표 이미지' },
+  { category: '한복', name: '고운한복', desc: '혼주 한복 대여 및 맞춤. 예식 1개월 전 채촌 필요.', phone: '02-0000-0014', rate: '제휴가 10%', slot: '업체 대표 이미지' },
+  { category: '청첩장', name: '카드공방', desc: '모바일 청첩장 무료 제작 포함. 인쇄 최소 수량 100장.', phone: '070-0000-0015', rate: '제휴가 12%', slot: '업체 대표 이미지' },
+  { category: '폐백음식', name: '정성폐백', desc: '예식 당일 반입. 이바지 음식 별도 주문 가능합니다.', phone: '02-0000-0016', rate: '제휴가 8%', slot: '업체 대표 이미지' },
 ];
 
 const FILES = [
@@ -148,15 +148,15 @@ const FILES = [
 ];
 
 const TODAY_SCHEDULE = [
-  { time: '10:30', cid: 4, couple: '이도현 · 김하늘', note: '1차 상담 · 가든홀 견적 안내', tag: '상담' },
-  { time: '12:00', cid: 3, couple: '정우성 · 한소희', note: '시식 예약 · 참석 4명', tag: '시식' },
+  { time: '10:30', cid: 4, couple: '이도윤 · 김하영', note: '1차 상담 · 가든홀 견적 안내', tag: '상담' },
+  { time: '12:00', cid: 3, couple: '정하람 · 한소연', note: '시식 예약 · 참석 4명', tag: '시식' },
   { time: '13:00', cid: 1, couple: '김민준 · 이서연', note: '최종 체크리스트 점검 · 식전 영상 안내', tag: '점검' },
-  { time: '16:00', cid: 5, couple: '오정민 · 서다은', note: '1차 상담 · 채플홀 9월 예식 문의', tag: '상담' },
+  { time: '16:00', cid: 5, couple: '오현우 · 서다인', note: '1차 상담 · 채플홀 9월 예식 문의', tag: '상담' },
 ];
 
 const HOME_KPIS = [
   { label: '오늘 상담', value: '3', unit: '건', sub: '10:30 · 13:00 · 16:00' },
-  { label: '오늘 시식', value: '1', unit: '건', sub: '12:00 정우성 · 한소희' },
+  { label: '오늘 시식', value: '1', unit: '건', sub: '12:00 정하람 · 한소연' },
   { label: '미확인 부재중 메모', value: '2', unit: '건', sub: '회신 필요' },
   { label: '이번 달 계약', value: '9', unit: '건', sub: '목표 12건 대비 75%' },
 ];
@@ -176,9 +176,9 @@ const STAT_KPIS = [
 ];
 
 const CONSULTS = [
-  { date: '2026. 1. 24', type: '3차 상담', staff: '김수정 팀장', body: '그랜드홀 A타입 데코 확정. 생화는 화이트 로즈로 요청하셨고, 예식 30일 전 최종 변경 가능하다고 안내드렸습니다.' },
-  { date: '2025. 12. 6', type: '2차 상담 · 계약', staff: '김수정 팀장', body: '5월 16일 13시 그랜드홀 계약 체결. 시식 예약은 3월 14일로 함께 확정했습니다. 하객 250명 기준 견적 전달.' },
-  { date: '2025. 11. 18', type: '1차 상담', staff: '박서준 주임', body: '밝은 분위기의 채광 좋은 홀 선호. 주차 200대 이상 가능한지 확인 요청하셨습니다.' },
+  { date: '2026. 1. 24', type: '3차 상담', staff: '홍길동 팀장', body: '그랜드홀 A타입 데코 확정. 생화는 화이트 로즈로 요청하셨고, 예식 30일 전 최종 변경 가능하다고 안내드렸습니다.' },
+  { date: '2025. 12. 6', type: '2차 상담 · 계약', staff: '홍길동 팀장', body: '5월 16일 13시 그랜드홀 계약 체결. 시식 예약은 3월 14일로 함께 확정했습니다. 하객 250명 기준 견적 전달.' },
+  { date: '2025. 11. 18', type: '1차 상담', staff: '김철수 주임', body: '밝은 분위기의 채광 좋은 홀 선호. 주차 200대 이상 가능한지 확인 요청하셨습니다.' },
 ];
 
 const STAGES = [
@@ -190,10 +190,10 @@ const STAGES = [
 ];
 
 const STAFF_STATS = [
-  { name: '김수정 팀장', consult: 24, contract: 9, rate: 37.5, wConsult: 62, wContract: 23 },
-  { name: '박서준 주임', consult: 18, contract: 6, rate: 33.3, wConsult: 47, wContract: 16 },
-  { name: '윤채영 매니저', consult: 14, contract: 4, rate: 28.6, wConsult: 36, wContract: 10 },
-  { name: '장하윤 사원', consult: 8, contract: 2, rate: 25.0, wConsult: 21, wContract: 5 },
+  { name: '홍길동 팀장', consult: 24, contract: 9, rate: 37.5, wConsult: 62, wContract: 23 },
+  { name: '김철수 주임', consult: 18, contract: 6, rate: 33.3, wConsult: 47, wContract: 16 },
+  { name: '이영희 매니저', consult: 14, contract: 4, rate: 28.6, wConsult: 36, wContract: 10 },
+  { name: '박민수 사원', consult: 8, contract: 2, rate: 25.0, wConsult: 21, wContract: 5 },
 ];
 
 const MONTHS = [
@@ -208,9 +208,9 @@ const MONTHS = [
 const HALL_OPTIONS = ['13:00 · 그랜드홀', '11:00 · 채플홀', '15:30 · 가든홀'];
 
 const ASSIGNEE_OPTIONS = [
-  '담당 인계 — 김수정 팀장',
-  '담당 인계 — 박서준 주임',
-  '담당 인계 — 윤채영 매니저',
+  '담당 인계 — 홍길동 팀장',
+  '담당 인계 — 김철수 주임',
+  '담당 인계 — 이영희 매니저',
 ];
 
 /* ------------------------------------------------------------------ 톤 -- */
