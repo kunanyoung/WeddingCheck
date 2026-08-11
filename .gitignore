@@ -1,0 +1,15 @@
+# 의존성 (이 프로젝트는 빌드 도구를 쓰지 않지만, npx serve 등으로 생길 수 있음)
+node_modules/
+package-lock.json
+
+# 편집기 · OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 로그 · 임시 파일
+*.log
+*.tmp
+~$*
