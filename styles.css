@@ -39,6 +39,12 @@
   --nav-fg-dim: #b6aca6;
   --nav-fg-faint: #9b908a;
 
+  /* Danger (삭제) */
+  --danger: #a3342b;
+  --danger-dark: #85271f;
+  --danger-bd: #e8cdc9;
+  --danger-tint: #fcf2f0;
+
   /* Semantic tones */
   --tone-green-bg: #eef3ec;
   --tone-green-fg: #4f6047;
@@ -488,6 +494,15 @@ h1, h2, h3, p { margin: 0; }
   flex-wrap: wrap;
 }
 
+/* 제목 위에 예식일 · 시간 · 홀을 먼저 놓는 줄 */
+.page-eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--rose);
+  letter-spacing: .01em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 6px;
+}
 .page-title {
   font-size: 24px;
   font-weight: 700;
@@ -543,6 +558,18 @@ h1, h2, h3, p { margin: 0; }
   font-weight: 600;
 }
 .btn--outline:hover { border-color: var(--rose); color: var(--rose); }
+
+/* 삭제 — 목록 안에서는 테두리형, 확인 모달에서는 채운 버튼 */
+.btn--danger {
+  background: var(--surface);
+  border-color: var(--danger-bd);
+  color: var(--danger);
+  font-weight: 600;
+}
+.btn--danger:hover { background: var(--danger-tint); border-color: var(--danger); }
+
+.btn--danger-solid { background: var(--danger); color: #fff; }
+.btn--danger-solid:hover { background: var(--danger-dark); }
 
 .btn--sm { height: 38px; padding: 0 15px; font-size: 12.5px; }
 .btn--xs { height: 34px; padding: 0 13px; font-size: 12px; font-weight: 600; }
@@ -677,6 +704,12 @@ h1, h2, h3, p { margin: 0; }
 }
 .tag--sq { padding: 4px 9px; border-radius: var(--r-sm); font-size: 11px; }
 .tag--xs { padding: 3px 8px; border-radius: var(--r-sm); font-size: 11px; }
+/* 눌러서 값을 바꿀 수 있는 배지 (회원 상태) */
+.tag--btn {
+  border: 1px solid transparent; cursor: pointer; font-family: inherit;
+  transition: filter .12s ease, border-color .12s ease;
+}
+.tag--btn:hover { filter: brightness(.97); border-color: currentColor; }
 
 .tone-rose { background: var(--tone-rose-bg); color: var(--tone-rose-fg); }
 .tone-green { background: var(--tone-green-bg); color: var(--tone-green-fg); }
@@ -737,8 +770,10 @@ h1, h2, h3, p { margin: 0; }
   letter-spacing: .02em;
 }
 
-.cols-customers { grid-template-columns: 1.3fr 1.1fr .8fr .9fr 1fr .8fr; }
-.cols-tastings { grid-template-columns: 1.15fr 1.15fr .55fr .85fr 1.05fr .95fr; }
+/* 컬럼 순서: 예식일시 · 홀 · 신랑신부 · 시식 · 체크리스트 · 상태 · 관리 */
+.cols-customers { grid-template-columns: 1.05fr .7fr 1.15fr .8fr .9fr .7fr 104px; }
+.cols-tastings { grid-template-columns: 1.05fr 1fr .5fr .8fr .95fr .9fr 104px; }
+.cols-members { grid-template-columns: 1.1fr 1fr .8fr .8fr 1fr 104px; }
 .cols-schedule { grid-template-columns: 74px 1fr auto; }
 
 .table__row {
@@ -749,6 +784,26 @@ h1, h2, h3, p { margin: 0; }
   border-bottom: 1px solid var(--line-faint);
 }
 .table__row:last-child { border-bottom: 0; }
+.table__row--hover { transition: background .12s ease; }
+.table__row--hover:hover { background: var(--surface-tint); }
+
+/* 행 안에서 상세로 들어가는 링크형 버튼 (이름 클릭) */
+.row-link {
+  border: 0; background: none; padding: 0;
+  font: inherit; font-size: 13.5px; font-weight: 600;
+  color: var(--ink); text-align: left; cursor: pointer;
+  text-underline-offset: 3px;
+}
+.row-link:hover { color: var(--rose); text-decoration: underline; }
+
+/* 목록 항목 공통 수정 · 삭제 버튼 */
+.row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.row-actions--right { margin-left: auto; }
+.row-actions--vendor {
+  margin-top: 10px; padding-top: 11px;
+  border-top: 1px dashed var(--line-dashed);
+  justify-content: flex-end;
+}
 
 .empty {
   padding: 40px 20px;
@@ -801,9 +856,17 @@ h1, h2, h3, p { margin: 0; }
 }
 .memo-brief:last-child { border-bottom: 0; }
 .memo-brief__top { display: flex; align-items: center; gap: 8px; }
-.memo-brief__who { font-size: 13px; font-weight: 600; }
-.memo-brief__time { font-size: 11.5px; color: var(--muted-3); margin-left: auto; }
-.memo-brief__body { font-size: 12.5px; color: var(--muted); margin-top: 7px; line-height: 1.55; }
+.memo-brief__title {
+  flex: 1; min-width: 0;
+  font-size: 13px; font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.memo-brief__time { flex: none; font-size: 11.5px; color: var(--muted-3); margin-left: auto; }
+.memo-brief__body {
+  font-size: 12.5px; color: var(--muted); margin-top: 7px; line-height: 1.55;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.memo-brief__author { font-size: 11.5px; color: var(--muted-3); margin-top: 6px; }
 
 .urgent-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
 .urgent {
@@ -820,13 +883,21 @@ h1, h2, h3, p { margin: 0; }
 .urgent:last-child { border-right: 0; }
 .urgent:hover { background: var(--surface-tint); }
 .urgent__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.urgent__couple { font-size: 14px; font-weight: 600; }
-.urgent__dday { font-size: 12px; font-weight: 700; color: var(--rose); }
-.urgent__meta { font-size: 11.5px; color: var(--muted-2); margin-top: 5px; }
+.urgent__event {
+  font-size: 13.5px; font-weight: 700; min-width: 0;
+  font-variant-numeric: tabular-nums;
+}
+.urgent__dday { font-size: 12px; font-weight: 700; color: var(--rose); flex: none; }
+.urgent__couple { font-size: 12px; color: var(--muted); margin-top: 5px; }
 .urgent__pct { font-size: 11.5px; color: var(--muted); margin-top: 7px; font-weight: 600; }
 
 .sched__time { font-size: 14px; font-weight: 700; letter-spacing: -.02em; }
-.sched__couple { font-size: 14px; font-weight: 600; }
+/* 표기 순서: 예식일 · 시간 · 홀 → 신랑신부 이름 → 상담 메모 */
+.sched__event {
+  font-size: 13.5px; font-weight: 700; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.sched__couple { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
 .sched__note { font-size: 12px; color: var(--muted-2); margin-top: 3px; }
 
 /* ======================================================= customers ==== */
@@ -839,11 +910,17 @@ h1, h2, h3, p { margin: 0; }
   align-items: center;
 }
 
-.cust__couple { font-size: 14px; font-weight: 600; }
+/* 첫 컬럼이 예식일시이므로 강조를 그쪽으로 옮깁니다 */
 .cust__phone { font-size: 11.5px; color: var(--muted-3); margin-top: 3px; }
-.cust__date { font-size: 13px; }
+.cust__date { font-size: 13.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .cust__dday { font-size: 11.5px; color: var(--rose); font-weight: 700; margin-top: 3px; }
 .cust__cell { font-size: 13px; color: var(--muted); }
+/* 시식 일정은 수기 메모라 길 수 있어 두 줄로 줄입니다 (전문은 title 속성과 상세 화면에서) */
+.cust__memo {
+  font-size: 12.5px; line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.cust__memo--empty { color: var(--muted-3); }
 .cust__pct { font-size: 11.5px; color: var(--muted-2); margin-top: 5px; }
 
 /* ====================================================== new customer == */
@@ -883,6 +960,7 @@ h1, h2, h3, p { margin: 0; }
   flex-wrap: wrap;
 }
 .form-actions__note { font-size: 12.5px; color: var(--muted-2); margin-right: auto; }
+.form-error { font-size: 12.5px; font-weight: 600; color: var(--danger); margin: 22px 0 0; }
 
 /* ========================================================== detail ==== */
 
@@ -939,6 +1017,25 @@ h1, h2, h3, p { margin: 0; }
   cursor: pointer;
 }
 .tasting-box__check input { width: 18px; height: 18px; accent-color: var(--rose); }
+
+/* 수기 메모 카드 (고객 상세의 시식 일정 · 체크리스트 메모) */
+.note { padding: 16px 20px 18px; }
+.note__text {
+  font-size: 13px; color: var(--ink-2); line-height: 1.65;
+  white-space: pre-wrap; overflow-wrap: anywhere;
+}
+.note__text--empty { color: var(--muted-3); }
+.note__foot {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 14px; padding-top: 13px;
+  border-top: 1px dashed var(--line-dashed);
+}
+.note__hint { font-size: 11.5px; color: var(--muted-3); line-height: 1.5; }
+.note__foot .btn { margin-left: auto; }
+
+/* 신규 등록 화면의 수기 메모 입력칸 */
+.memo-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.memo-fields__hint { font-size: 12px; color: var(--muted-2); margin: 12px 0 0; line-height: 1.6; }
 
 /* ======================================================= checklist ==== */
 
@@ -1017,10 +1114,15 @@ h1, h2, h3, p { margin: 0; }
 
 .tasting__couple {
   border: 0; background: none; padding: 0;
-  font-size: 14px; font-weight: 600; cursor: pointer;
-  color: var(--ink); text-align: left;
+  font-size: 12.5px; font-weight: 500; cursor: pointer;
+  color: var(--muted); text-align: left;
 }
 .tasting__couple:hover { color: var(--rose); }
+/* 예식일 · 시간 · 홀 — 시식 일시와 혼동되지 않게 "예식" 접두사와 함께 먼저 표기 */
+.tasting__event {
+  font-size: 13px; font-weight: 700; color: var(--ink);
+  font-variant-numeric: tabular-nums; margin-bottom: 3px;
+}
 .tasting__memo { font-size: 11.5px; color: var(--muted-3); margin-top: 4px; }
 .tasting__date { font-size: 13px; }
 .tasting__place { font-size: 11.5px; color: var(--muted-3); margin-top: 3px; }
@@ -1071,15 +1173,44 @@ h1, h2, h3, p { margin: 0; }
 .memo:last-child { border-bottom: 0; }
 .memo__body { flex: 1; min-width: 0; }
 .memo__top { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
-.memo__who { font-size: 13.5px; font-weight: 700; }
-.memo__phone { font-size: 12px; color: var(--muted-3); }
-.memo__stamp { font-size: 11.5px; color: var(--muted-3); margin-left: auto; }
-.memo__text { font-size: 13px; color: var(--ink-2); margin-top: 9px; line-height: 1.65; }
-.memo__assignee { font-size: 11.5px; color: var(--muted-2); margin-top: 9px; }
-.memo__action { flex: none; align-self: center; }
+/* 게시글 식별 — 제목 · 작성 시각 · 작성자 */
+.memo__title {
+  flex: 1; min-width: 0;
+  font-size: 13.5px; font-weight: 700; line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.memo__stamp { flex: none; font-size: 11.5px; color: var(--muted-3); margin-left: auto; }
+.memo__text {
+  font-size: 13px; color: var(--ink-2); margin-top: 9px; line-height: 1.65;
+  white-space: pre-wrap; overflow-wrap: anywhere;
+}
+/* 본문 길이에 제한이 없으므로 긴 글에서도 버튼은 첫 줄 옆에 둡니다. */
+.memo__actions {
+  flex: none; align-self: flex-start; margin-top: 2px;
+  display: flex; flex-direction: column; gap: 6px; align-items: stretch;
+}
+.memo__actions .row-actions { justify-content: space-between; }
+.memo__actions .row-actions .btn { flex: 1; }
 
 .memo-form { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
 .memo-form .input, .memo-form .select { height: 42px; }
+.memo-form__label { font-size: 12px; font-weight: 600; color: var(--muted-2); margin-bottom: -4px; }
+.memo-form__hint { font-size: 11.5px; color: var(--muted-3); margin: -6px 0 0; line-height: 1.5; }
+.memo-form__error { font-size: 12px; font-weight: 600; color: var(--rose); margin: -4px 0 0; line-height: 1.5; }
+
+/* ========================================================== admin ==== */
+
+.member__name { font-size: 13.5px; font-weight: 700; }
+.member__account {
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted-2); margin-top: 3px;
+}
+.member__cell { font-size: 12.5px; color: var(--muted); }
+.member__last { font-size: 11.5px; color: var(--muted-3); margin-top: 3px; }
+
+.scope-list { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.scope { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
+.scope__text { font-size: 12px; color: var(--muted); line-height: 1.5; flex: 1; min-width: 0; }
+.scope__count { font-size: 11.5px; font-weight: 700; color: var(--muted-2); }
 
 /* ======================================================== vendors ==== */
 
@@ -1177,7 +1308,19 @@ h1, h2, h3, p { margin: 0; }
 .dialog__copy .input { background: var(--surface-tint); color: var(--muted); font-size: 13px; }
 .dialog__actions { display: flex; gap: 10px; margin-top: 20px; }
 .dialog__actions .btn { flex: 1; height: 46px; }
-.dialog__actions .btn--primary { flex: 1.4; }
+.dialog__actions .btn--primary,
+.dialog__actions .btn--danger-solid { flex: 1.4; }
+
+/* 공통 수정 모달 — 항목 수가 많으면 모달 안에서만 스크롤됩니다. */
+.dialog--edit { width: 520px; max-height: min(86vh, 760px); overflow-y: auto; }
+.edit-form { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
+.edit-form__field { display: flex; flex-direction: column; gap: 6px; }
+.edit-form__label { font-size: 12px; font-weight: 600; color: var(--muted-2); }
+.edit-form .input, .edit-form .select { height: 42px; }
+.edit-form__hint { font-size: 11.5px; color: var(--muted-3); margin: 0; line-height: 1.5; }
+.edit-form__error { font-size: 12.5px; font-weight: 600; color: var(--danger); margin: 14px 0 0; }
+
+.section-label--danger { color: var(--danger); }
 
 /* Mobile preview */
 .preview {
@@ -1243,8 +1386,8 @@ h1, h2, h3, p { margin: 0; }
 }
 .m-hero__copy { position: absolute; left: 22px; right: 22px; bottom: 18px; color: #fff; }
 .m-hero__eyebrow { font-size: 11px; letter-spacing: .22em; opacity: .85; }
-.m-hero__couple { font-family: var(--font-serif); font-size: 21px; margin-top: 8px; }
-.m-hero__meta { font-size: 12px; opacity: .85; margin-top: 6px; }
+.m-hero__meta { font-size: 12px; opacity: .85; margin-top: 8px; font-variant-numeric: tabular-nums; }
+.m-hero__couple { font-family: var(--font-serif); font-size: 21px; margin-top: 6px; }
 
 .m-body { padding: 20px 22px; }
 .m-card {
@@ -1372,7 +1515,7 @@ h1, h2, h3, p { margin: 0; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .urgent-grid { grid-template-columns: 1fr; }
   .urgent { border-right: 0; border-bottom: 1px solid var(--line-faint); }
-  .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+  .form-grid-2, .form-grid-3, .memo-fields { grid-template-columns: 1fr; }
   .preview { flex-direction: column; gap: 20px; }
   .preview__copy { max-width: 390px; }
 }
@@ -1380,7 +1523,7 @@ h1, h2, h3, p { margin: 0; }
 @media (max-width: 720px) {
   .kpi-grid, .stat-grid { grid-template-columns: 1fr; }
   .table-scroll { overflow-x: auto; }
-  .table-scroll > * { min-width: 720px; }
+  .table-scroll > * { min-width: 860px; }
   .main { padding: 20px 16px 48px; }
   .phone { width: 100%; max-width: 390px; height: 78vh; }
 }
