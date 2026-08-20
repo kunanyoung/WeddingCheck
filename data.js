@@ -37,6 +37,9 @@ const SHARE_LINK = 'https://weddingcheck.kr/s/9f2ac7';
  */
 const CHECKLIST_DUE = '예식 14일 전까지 전체 항목 회신';
 
+/** 체크리스트 항목의 담당 구분 — 항목 추가 · 수정 폼에서 고릅니다. (TONE 과 짝이 맞아야 합니다) */
+const CHECKLIST_TAGS = ['예약실', '신랑신부', '제휴업체', '파일첨부'];
+
 /** 금액·단가처럼 계약별로 달라지는 값을 비워 둔 자리 */
 const NBSP = String.fromCharCode(0xa0);
 const BLANK = '(' + NBSP.repeat(6) + ')';
@@ -171,7 +174,8 @@ const TODAY_SCHEDULE = [
 ];
 
 const HOME_KPIS = [
-  { label: '오늘 상담', value: '3', unit: '건', sub: '10:30 · 13:00 · 16:00' },
+  // '오늘 상담' 의 건수와 시간 목록은 consultations 저장소에서 집계하므로 여기서 채우지 않습니다.
+  { label: '오늘 상담', value: '0', unit: '건', sub: '' },
   { label: '오늘 시식', value: '1', unit: '건', sub: '12:00 정하람 · 한소연' },
   { label: '확인 안 한 게시글', value: '2', unit: '건', sub: '회신 필요' },
   { label: '이번 달 계약', value: '9', unit: '건', sub: '목표 12건 대비 75%' },
@@ -221,7 +225,25 @@ const MONTHS = [
   { label: '2월', value: 21, h: 78, peak: true },
 ];
 
+/**
+ * 오늘 상담 기록(consultations)의 상담 구분.
+ * 등록 폼의 라디오와 리스트 배지가 함께 쓰므로 TONE 에 같은 이름이 있어야 합니다.
+ */
+const CONSULT_TYPES = ['워킹인', '컨설팅'];
+
+/**
+ * 상담 진행 상태. '계약완료' 로 바뀌는 순간에만 예식 연결 영역이 열립니다.
+ * (상담취소 · 보류는 연결할 예식이 없으므로 열지 않습니다)
+ */
+const CONSULT_STATUSES = ['진행중', '계약완료', '상담취소', '보류'];
+
+/** 시식장 선택지 — 고객 등록의 시식 일정에서 고릅니다. */
+const TASTING_PLACES = ['그랜드홀 시식장', '채플홀 시식장', '가든홀 시식장'];
+
 const HALL_OPTIONS = ['13:00 · 그랜드홀', '11:00 · 채플홀', '15:30 · 가든홀'];
+
+/** 홀 이름만 — 예식기본정보 수기 등록 · 수정과 예식 정보 수정 폼이 함께 씁니다. */
+const HALLS = ['그랜드홀', '채플홀', '가든홀'];
 
 /* ------------------------------------------------------------------ 톤 -- */
 
@@ -238,6 +260,12 @@ const MEMBERS = [
   { id: 'u4', name: '박서준', account: 'park.sj', team: '연회팀', role: '직원', status: '휴면', joined: '2022. 5. 9', last: '2026. 1. 12' },
   { id: 'u5', name: '최유진', account: 'choi.yj', team: '웨딩사업부', role: '직원', status: '승인 대기', joined: '2026. 2. 9', last: '접속 없음' },
 ];
+
+/**
+ * 작성자로 고를 수 있는 직원 이름의 초기값.
+ * 로그인 계정(MEMBERS)과는 별개 목록이며, 설정 화면에서 자유롭게 고칠 수 있습니다.
+ */
+const STAFF_SEED = ['홍길동 팀장', '이영희 매니저', '김철수 주임', '박민수 사원'];
 
 const MEMBER_ROLES = ['관리자', '매니저', '직원'];
 const MEMBER_STATUSES = ['활성', '승인 대기', '휴면'];
@@ -268,6 +296,10 @@ const TONE = {
   파일첨부: 'violet',
   제휴업체: 'amber',
   상담: 'violet',
+  워킹인: 'violet',
+  컨설팅: 'amber',
+  상담취소: 'neutral',
+  보류: 'violet',
   시식: 'green',
   점검: 'rose',
 };
@@ -319,14 +351,15 @@ const NAV_ITEMS = [
   { id: 'vendors', label: '제휴업체 관리' },
   { id: 'stats', label: '실적 대시보드' },
   { id: 'admin', label: '관리자 · 회원 관리' },
+  { id: 'settings', label: '설정' },
 ];
 
 window.WCData = {
   TODAY, TODAY_LABEL, STAFF, SHARE_LINK,
-  CHECKLIST, CHECKLIST_DUE, CUSTOMERS, TASTINGS, MEMOS, VENDORS, FILES,
+  CHECKLIST, CHECKLIST_DUE, CHECKLIST_TAGS, CUSTOMERS, TASTINGS, MEMOS, VENDORS, FILES,
   TODAY_SCHEDULE, HOME_KPIS, TASTING_KPIS, STAT_KPIS,
   CONSULTS, STAGES, STAFF_STATS, MONTHS,
-  MEMBERS, MEMBER_ROLES, MEMBER_STATUSES, ROLE_SCOPES,
-  HALL_OPTIONS, TONE,
+  MEMBERS, MEMBER_ROLES, MEMBER_STATUSES, ROLE_SCOPES, STAFF_SEED,
+  HALL_OPTIONS, HALLS, TASTING_PLACES, CONSULT_TYPES, CONSULT_STATUSES, TONE,
   PETALS, PETALS_DENSE, HERO_OPTIONS, NAV_ITEMS,
 };

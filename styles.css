@@ -1527,3 +1527,834 @@ h1, h2, h3, p { margin: 0; }
   .main { padding: 20px 16px 48px; }
   .phone { width: 100%; max-width: 390px; height: 78vh; }
 }
+
+/* ================================================== 예식기본정보 ==== */
+
+.evinfo__tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.evinfo__body { padding: 18px 20px 20px; }
+
+/* 읽기 모드 — 날짜 · 요일 · 시간 · 홀 · 별칭 다섯 칸 */
+.evinfo__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.evinfo__cell {
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  background: var(--surface-tint);
+  padding: 12px 14px;
+  min-width: 0;
+}
+.evinfo__label { font-size: 11.5px; font-weight: 600; color: var(--muted-2); }
+.evinfo__value {
+  margin-top: 5px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.evinfo__value--empty { color: var(--muted-3); font-weight: 400; }
+
+.evinfo__error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  border: 1px solid var(--danger-bd);
+  background: var(--danger-tint);
+  border-radius: var(--r-lg);
+  padding: 14px 16px;
+}
+.evinfo__error-text { font-size: 13px; font-weight: 600; color: var(--danger); }
+
+/* 보는 예식 선택기 */
+.evpick { display: flex; align-items: center; gap: 8px; }
+.evpick__label { font-size: 11.5px; font-weight: 600; color: var(--muted-2); }
+.select--sm { height: 34px; font-size: 12.5px; width: auto; max-width: 260px; }
+
+/* 등록 · 수정 폼 (인라인 편집) */
+.evform__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.evform__wide { grid-column: 1 / -1; }
+.evform .input, .evform .select { height: 42px; }
+.evform[aria-busy] { opacity: .75; }
+
+.field__req {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--rose);
+  vertical-align: 1px;
+}
+.field__hint { font-size: 11.5px; font-weight: 400; color: var(--muted-3); line-height: 1.5; }
+
+/* 자동 계산되어 직접 고칠 수 없는 칸 (요일) */
+.input--locked {
+  background: var(--surface-tint);
+  color: var(--muted);
+  cursor: default;
+}
+
+.evform__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-faint);
+}
+
+/* 스태프 메모 (읽기 전용) */
+.evmemo { padding: 12px 20px; border-bottom: 1px solid var(--line-faint); }
+.evmemo:last-child { border-bottom: 0; }
+.evmemo__head { font-size: 11.5px; font-weight: 600; color: var(--muted-2); }
+.evmemo__body { margin-top: 4px; font-size: 13px; color: var(--ink-2); line-height: 1.6; }
+
+/* ------------------------------------------- 삭제 항목 고르기 모달 -- */
+
+.del-whole {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-top: 16px;
+  padding: 13px 14px;
+  border: 1px solid var(--danger-bd);
+  background: var(--danger-tint);
+  border-radius: var(--r-lg);
+  cursor: pointer;
+}
+.del-whole__body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.del-whole__title { font-size: 13.5px; font-weight: 700; color: var(--danger); }
+.del-whole__note { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+
+.del-list {
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.del-list__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface-tint);
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted-2);
+}
+
+.del-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--line-faint);
+  cursor: pointer;
+}
+.del-item:last-child { border-bottom: 0; }
+.del-item:hover { background: var(--surface-alt); }
+/* 예식 전체 삭제를 고르면 하위 항목은 전부 포함되므로 손댈 수 없습니다. */
+.del-item--forced { cursor: default; opacity: .62; }
+.del-item--forced:hover { background: transparent; }
+
+.del-item__body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.del-item__label { font-size: 13px; font-weight: 600; color: var(--ink-2); overflow-wrap: anywhere; }
+.del-item__note { font-size: 11.5px; color: var(--muted-3); overflow-wrap: anywhere; }
+
+/* 확인 단계에서 지울 항목을 한 번 더 훑어보는 목록 */
+.del-recap {
+  margin: 14px 0 0;
+  padding: 12px 16px 12px 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface-tint);
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.8;
+  max-height: 190px;
+  overflow-y: auto;
+}
+
+.dialog__actions .form-actions__note { align-self: center; font-size: 12px; }
+
+/* -------------------------------------------------- 저장 결과 알림 -- */
+
+.toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(420px, calc(100vw - 48px));
+  padding: 13px 18px;
+  border-radius: var(--r-xl);
+  background: var(--nav-bg);
+  color: var(--nav-fg);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  box-shadow: 0 12px 32px rgba(30, 24, 22, .28);
+  animation: wctoast .24s ease both;
+}
+
+.toast__mark {
+  flex: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  color: #fff;
+  background: var(--rose);
+}
+.toast--error .toast__mark { background: var(--danger); }
+.toast__text { min-width: 0; overflow-wrap: anywhere; }
+
+@keyframes wctoast {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast { animation: none; }
+}
+
+@media (max-width: 1180px) {
+  .evinfo__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 860px) {
+  .evinfo__grid, .evform__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .evinfo__tools { width: 100%; }
+  .evpick, .evpick .select { flex: 1; max-width: none; }
+}
+
+@media (max-width: 720px) {
+  .evinfo__grid, .evform__grid { grid-template-columns: 1fr; }
+  .toast { right: 16px; left: 16px; bottom: 16px; max-width: none; }
+}
+
+/* ================================== 체크리스트 항목 목록 관리 ==== */
+
+.item__tools { display: flex; gap: 6px; flex: none; }
+
+/* 목록 안에서 그 줄을 대신해 열리는 인라인 편집기 */
+.itemform {
+  padding: 16px 20px 18px;
+  background: var(--surface-tint);
+  border-bottom: 1px solid var(--line-faint);
+}
+.itemform:last-child { border-bottom: 0; }
+.itemform[aria-busy] { opacity: .75; }
+
+.itemform__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 14px;
+}
+.itemform__wide { grid-column: 1 / -1; }
+.itemform .input, .itemform .select { height: 42px; }
+.itemform .evform__actions { margin-top: 14px; padding-top: 14px; }
+
+@media (max-width: 860px) {
+  .itemform__grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  /* 좁은 화면에서는 수정 · 삭제 버튼이 아래로 내려가게 둡니다. */
+  .item { flex-wrap: wrap; }
+  .item__tools { margin-left: auto; }
+}
+
+/* ============================ 작성자 수기 기록 · 활동 이력 ==== */
+
+/* 사이드바 기록 담당 — 로그인 계정과 별개임을 눈으로도 구분합니다. */
+.recorder {
+  padding: 13px 14px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(232, 225, 219, .18);
+  border-radius: var(--r-lg);
+  background: rgba(255, 255, 255, .05);
+}
+.recorder__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--nav-fg-dim);
+  margin-bottom: 7px;
+  letter-spacing: .02em;
+}
+.recorder .select {
+  height: 34px;
+  width: 100%;
+  max-width: none;
+  font-size: 12.5px;
+  background: var(--surface);
+  border-color: transparent;
+}
+.recorder__hint {
+  margin-top: 8px;
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--nav-fg-faint);
+}
+
+/* 폼 안의 작성자 드롭다운 */
+.authorfield {
+  padding-top: 14px;
+  margin-top: 14px;
+  border-top: 1px dashed var(--line-dashed);
+}
+.edit-form .authorfield { margin-top: 0; }
+
+.authorfield--empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--danger-bd);
+  background: var(--danger-tint);
+  border-radius: var(--r-lg);
+}
+.authorfield__warn { font-size: 12.5px; font-weight: 600; color: var(--danger); }
+
+/* 최종 수정자 표시 */
+.evinfo__stamp {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 11px 20px;
+  border-top: 1px solid var(--line-soft);
+  background: var(--surface-tint);
+  font-size: 11.5px;
+  color: var(--muted-2);
+}
+.item__stamp { font-size: 11px; color: var(--muted-3); margin-top: 3px; }
+
+/* 설정 · 직원 목록 */
+.stafflist {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.staffrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--line-faint);
+}
+.staffrow:last-child { border-bottom: 0; }
+.staffrow__name { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+
+/* 활동 이력 표 */
+.dialog--logs { width: 760px; max-height: min(86vh, 780px); overflow-y: auto; }
+
+.logtable {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.logtable__head, .logtable__row {
+  display: grid;
+  grid-template-columns: 128px 104px 108px 62px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px 14px;
+}
+.logtable__head {
+  background: var(--surface-tint);
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted-2);
+}
+.logtable__row { border-bottom: 1px solid var(--line-faint); font-size: 12px; }
+.logtable__row:last-child { border-bottom: 0; }
+.logtable__when { color: var(--muted-2); font-variant-numeric: tabular-nums; }
+.logtable__who { font-weight: 700; color: var(--ink-2); }
+.logtable__what { color: var(--muted); }
+.logtable__detail { color: var(--ink-2); overflow-wrap: anywhere; }
+
+@media (max-width: 860px) {
+  .dialog--logs { width: 100%; }
+  .logtable__head { display: none; }
+  .logtable__row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* 시식일이 예식일보다 뒤일 때처럼, 고른 값이 어긋났음을 알리는 콜아웃 */
+.callout--warn { background: var(--danger-tint); border: 1px solid var(--danger-bd); }
+.callout--warn .callout__label { color: var(--danger); }
+.callout--warn .callout__text { color: var(--danger); font-weight: 600; }
+
+/* ============================== 시식 일정 후보 (제안 · 확정) ==== */
+
+/* 예약실 측 — 확정 결과를 눈에 띄게 */
+.cand-confirmed {
+  margin: 0;
+  padding: 16px 20px;
+  background: var(--rose-wash);
+  border-bottom: 1px solid var(--rose-wash-bd);
+}
+.cand-confirmed__label { font-size: 11.5px; font-weight: 700; color: var(--muted-2); }
+.cand-confirmed__when {
+  margin-top: 5px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--rose);
+  font-variant-numeric: tabular-nums;
+}
+.cand-confirmed__meta { margin-top: 4px; font-size: 11.5px; color: var(--muted-2); }
+
+/* 신랑신부가 확정을 바꿨을 때의 변경 알림 */
+.cand-changed {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--tone-amber-bg);
+  background: var(--tone-amber-bg);
+  border-radius: var(--r-md);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tone-amber-fg);
+}
+
+/* 후보 한 줄 */
+.cand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line-faint);
+}
+.cand:last-child { border-bottom: 0; }
+.cand__mark {
+  width: 21px; height: 21px; flex: none;
+  border-radius: var(--r-sm);
+  border: 1.5px solid var(--line-dashed);
+  display: grid; place-items: center;
+  font-size: 12px; font-weight: 700;
+  color: #fff;
+}
+.cand--on .cand__mark { background: var(--rose); border-color: var(--rose); }
+.cand__body { flex: 1; min-width: 0; }
+.cand__when {
+  font-size: 13.5px; font-weight: 600; color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.cand--on .cand__when { color: var(--rose); }
+.cand__meta { font-size: 11.5px; color: var(--muted-3); margin-top: 3px; }
+
+/* 후보 추가 폼 */
+.candform {
+  padding: 16px 20px 18px;
+  background: var(--surface-tint);
+  border-top: 1px solid var(--line-soft);
+}
+.candform__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.candform .input, .candform .select { height: 42px; }
+
+@media (max-width: 1180px) {
+  .candform__grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 720px) {
+  .candform__grid { grid-template-columns: 1fr; }
+}
+
+/* 신랑신부 측 — 공유 링크 화면의 후보 선택 */
+.m-cand__empty { font-size: 12.5px; color: var(--muted-2); line-height: 1.6; }
+.m-cand__hint { margin-top: 8px; font-size: 11.5px; color: var(--muted-2); line-height: 1.6; }
+
+.m-cand__list { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 14px; }
+.m-cand__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .15s ease, background .15s ease;
+}
+.m-cand__row:hover { border-color: var(--rose-light); }
+.m-cand__row--on { border-color: var(--rose); background: var(--rose-wash); color: var(--rose); }
+.m-cand__dot {
+  width: 16px; height: 16px; flex: none;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-dashed);
+  display: grid; place-items: center;
+  font-size: 9px;
+  color: var(--rose);
+  line-height: 1;
+}
+.m-cand__row--on .m-cand__dot { border-color: var(--rose); }
+.m-cand__when { flex: 1; min-width: 0; font-variant-numeric: tabular-nums; }
+
+/* ================================== 오늘 상담 기록 (계약 전) ==== */
+
+/* 목록 머리줄 — 오늘 건수 · 전체 선택 · 고른 항목 삭제 */
+.consult-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 20px;
+  background: var(--surface-tint);
+  border-bottom: 1px solid var(--line-soft);
+}
+.consult-head__label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted-2);
+  margin-right: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+  한 줄: [체크박스] [시간 · 구분] [작성자]
+  메모를 펼치면 두 번째 줄이 체크박스 칸을 비우고 그 오른쪽에 붙습니다.
+*/
+.consult-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 12px;
+  padding: 11px 20px;
+  border-bottom: 1px solid var(--line-faint);
+}
+.consult-row:last-child { border-bottom: 0; }
+.consult-row--on { background: var(--danger-tint); }
+
+.consult-row__main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+/* 메모가 있는 줄만 눌러서 펼칩니다 */
+.consult-row__main--open { cursor: pointer; }
+.consult-row__main--open:hover .consult-row__when { color: var(--rose); }
+
+.consult-row__when {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+  transition: color .12s ease;
+}
+.consult-row__sep { color: var(--muted-3); font-size: 12px; }
+.consult-row__memo-mark {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--muted-2);
+  padding: 2px 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+}
+.consult-row__by { font-size: 11.5px; color: var(--muted-3); flex: none; }
+
+/* 삭제 체크박스를 두지 않는 줄(연결 필요 목록)에서 칸을 맞추는 자리 */
+.consult-row__spacer { width: 20px; height: 1px; display: block; }
+/* 오늘이 아닌 기록의 상담일 */
+.consult-row__date {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 상태 · 연결 배지 · 작성자 */
+.consult-row__side { display: flex; align-items: center; gap: 8px; flex: none; }
+.consult-row__status {
+  height: 30px;
+  width: auto;
+  padding: 0 26px 0 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  border-color: transparent;
+  color: inherit;
+}
+.consult-row__status:focus-visible { border-color: var(--rose); }
+
+/* "🔗 예식 연결됨" · "연결 필요" 배지 버튼 */
+.linkbadge {
+  padding: 4px 9px;
+  border-radius: var(--r-sm);
+  border: 1px solid transparent;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter .12s ease, border-color .12s ease;
+}
+.linkbadge:hover { filter: brightness(.97); border-color: currentColor; }
+.linkbadge--on { background: var(--tone-green-bg); color: var(--tone-green-fg); }
+.linkbadge--warn { background: var(--danger-tint); color: var(--danger); border-color: var(--danger-bd); }
+
+/* 연결이 필요한 계약완료 건 안내 */
+.consult-warn {
+  margin: 0;
+  padding: 11px 20px;
+  background: var(--danger-tint);
+  border-bottom: 1px solid var(--danger-bd);
+  font-size: 12px;
+  color: var(--danger);
+  line-height: 1.6;
+}
+.consult-head--sub { border-top: 1px solid var(--line-soft); }
+
+/* ------------------------------------------- 예식 연결 (인라인 영역) -- */
+
+.conlink {
+  grid-column: 2 / -1;
+  margin: 4px 0 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--surface-alt);
+  overflow: hidden;
+}
+.consult-row--open { background: var(--surface-tint); }
+
+.conlink__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 11px 14px;
+  background: var(--surface-tint);
+  border-bottom: 1px solid var(--line-soft);
+}
+.conlink__title { font-size: 12.5px; font-weight: 700; color: var(--ink-2); }
+.conlink__sub {
+  flex: 1;
+  min-width: 0;
+  font-size: 11.5px;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.conlink__tabs { display: flex; gap: 8px; padding: 12px 14px 0; }
+.conlink__body { padding: 12px 14px 14px; }
+.conlink__body .input, .conlink__body .select { height: 40px; }
+
+.conlink__list {
+  margin-top: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  max-height: 232px;
+  overflow-y: auto;
+}
+.conlink__list .empty { padding: 22px 16px; }
+
+.conlink__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line-faint);
+}
+.conlink__row:last-child { border-bottom: 0; }
+.conlink__row--on { background: var(--tone-green-bg); }
+.conlink__row-body { flex: 1; min-width: 0; }
+.conlink__when {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.conlink__meta { margin-top: 3px; font-size: 11.5px; color: var(--muted-3); overflow-wrap: anywhere; }
+
+.conlink__carry {
+  margin: 12px 0 0;
+  font-size: 11.5px;
+  color: var(--muted-2);
+  line-height: 1.6;
+}
+.conlink__note {
+  margin: 0;
+  padding: 10px 14px;
+  border-top: 1px solid var(--line-faint);
+  font-size: 11px;
+  color: var(--muted-3);
+  line-height: 1.6;
+}
+.conlink .edit-form__error { margin: 0 14px 12px; }
+
+/* 미리보기 모달 — 좁은 다이얼로그라 5칸 그리드를 2칸으로 접습니다 */
+.conlink__preview {
+  margin-top: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+/* 별칭은 길어질 수 있으므로 한 줄을 다 씁니다 */
+.conlink__preview > .evinfo__cell:last-child { grid-column: 1 / -1; }
+.conlink__gone {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--danger-bd);
+  background: var(--danger-tint);
+  border-radius: var(--r-md);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+/* ------------------------------------ 실적 대시보드 · 연결 필요 목록 -- */
+
+.stat__value--warn { color: var(--danger); }
+.linkrow__done { margin-top: 16px; font-size: 12.5px; color: var(--tone-green-fg); font-weight: 600; }
+
+.linklist {
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.linklist__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface-tint);
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted-2);
+}
+.linkrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line-faint);
+}
+.linkrow:last-child { border-bottom: 0; }
+.linkrow__when {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
+.linkrow__memo {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.linkrow__by { font-size: 11.5px; color: var(--muted-3); flex: none; }
+
+@media (max-width: 900px) {
+  .consult-row { grid-template-columns: auto minmax(0, 1fr); }
+  .consult-row__side { grid-column: 2 / -1; flex-wrap: wrap; }
+  .consult-row__memo, .conlink { grid-column: 2 / -1; }
+}
+
+.consult-row__memo {
+  grid-column: 2 / -1;
+  margin: 0;
+  padding: 9px 12px;
+  background: var(--surface-tint);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-md);
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+/* 오늘이 아닌 날짜로 남긴 기록이 있을 때의 안내 */
+.consult-note {
+  margin: 0;
+  padding: 10px 20px;
+  border-top: 1px solid var(--line-faint);
+  font-size: 11.5px;
+  color: var(--muted-3);
+}
+
+/* 상담 구분 라디오 (워킹인 · 컨설팅) */
+.seg {
+  display: flex;
+  gap: 0;
+  height: 42px;
+  padding: 3px;
+  background: var(--surface-tint);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+}
+.seg__btn {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.seg__btn:hover { color: var(--rose); }
+.seg__btn--on {
+  background: var(--surface);
+  color: var(--rose);
+  box-shadow: 0 1px 2px rgba(34, 29, 27, .08);
+}
+.seg__btn:disabled { cursor: default; opacity: .6; }
+
+/* 필수가 아닌 칸의 표시 (.field__req 와 짝) */
+.field__opt {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--muted-3);
+  vertical-align: 1px;
+}
+
+.candform__wide { grid-column: 1 / -1; }
